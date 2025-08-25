@@ -1,45 +1,58 @@
 ---
-import '../styles/global.css';
-
 export interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = "Habitat Root - Communication & Posture Training" } = Astro.props;
+const { title, description = "HabitatRoot - Storytelling and Postural Awareness Courses" } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en" data-theme="habitat">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="author" content="Habitat Root" />
+    <meta name="author" content="HabitatRoot" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <title>{title}</title>
+
+    <!-- Import fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
   </head>
   <body>
-    <nav class="navbar bg-base-100 shadow-lg">
-      <div class="navbar-start">
-        <a href="/" class="btn btn-ghost text-xl">Habitat Root</a>
-      </div>
-      <div class="navbar-end">
-        <a href="/events" class="btn btn-ghost">Events</a>
-        <a href="/contact" class="btn btn-ghost">Contact</a>
+    <!-- Import global CSS -->
+    <style is:global>
+      @import '../styles/global.css';
+    </style>
+    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+      <div class="container-custom">
+        <div class="flex justify-between items-center py-4">
+          <a href="/" class="text-2xl font-bold text-gray-900">HabitatRoot</a>
+          <div class="hidden md:flex space-x-8">
+            <a href="#program" class="text-gray-600 hover:text-gray-900 transition-colors">Program</a>
+            <a href="#location" class="text-gray-600 hover:text-gray-900 transition-colors">Location</a>
+            <a href="#pricing" class="text-gray-600 hover:text-gray-900 transition-colors">Pricing</a>
+            <a href="#register" class="btn-primary">Book now</a>
+          </div>
+        </div>
       </div>
     </nav>
-    
+
     <main>
       <slot />
     </main>
-    
-    <footer class="footer footer-center p-10 bg-base-200 text-base-content">
-      <div>
-        <p>© 2025 Habitat Root. All rights reserved.</p>
+
+    <footer class="bg-gray-50 border-t border-gray-100">
+      <div class="container-custom py-12">
+        <div class="text-center">
+          <p class="text-gray-600">© 2025 HabitatRoot. All rights reserved.</p>
+        </div>
       </div>
     </footer>
   </body>

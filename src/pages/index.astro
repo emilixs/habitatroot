@@ -2,13 +2,21 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
+// Get featured event
 const events = await getCollection('events');
-const featuredEvent = events.find(e => e.data.featured) || events[0];
+const featuredEvent = events.find(event => event.data.featured) || events[0];
+
+// Get trainer info
 const trainer = await getCollection('trainer');
+const trainerInfo = trainer[0];
 const trainerData = trainer[0]?.data;
 
+// Get contact info
+import contactData from '../content/settings/contact.json';
+
+// Format date range
 function formatDateRange(startStr, endStr) {
-  const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const s = new Date(startStr);
   const e = endStr ? new Date(endStr) : null;
   if (!e || s.toDateString() === e.toDateString()) {
@@ -20,101 +28,118 @@ function formatDateRange(startStr, endStr) {
 }
 
 const dateStr = featuredEvent ? formatDateRange(featuredEvent.data.startDate, featuredEvent.data.endDate) : '';
-const { Content } = featuredEvent ? await featuredEvent.render() : { Content: null };
 ---
 
-<Layout title={featuredEvent ? featuredEvent.data.title : 'Habitat Root'}>
-  <!-- Sticky anchor navigation -->
-  <nav class="w-full sticky top-0 z-40 bg-base-100/80 backdrop-blur">
-    <div class="container mx-auto px-4 py-2 flex gap-2 justify-center">
-      <a href="#program" class="btn btn-sm">Program</a>
-      <a href="#location" class="btn btn-sm">Location</a>
-      <a href="#pricing" class="btn btn-sm">Pricing</a>
-      <a href="#register" class="btn btn-primary btn-sm">Book now</a>
+<Layout title="HabitatRoot - Storytelling and Postural Awareness Course">
+  <!-- Hero Section -->
+  <section class="hero-section bg-gradient-to-br from-blue-50 to-gray-50">
+    <div class="container-custom text-center">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+          {featuredEvent?.data.title || "Storytelling and Postural Awareness Course"}
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+          {featuredEvent?.data.intro || "The first immersive communication and posture course in Romania"}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#program" class="btn-primary text-lg">Program details</a>
+          <a href="#register" class="btn-secondary text-lg">Book course</a>
+        </div>
+      </div>
     </div>
-  </nav>
+  </section>
 
-  <!-- Hero Section: background image + overlay -->
+  <!-- Event Details -->
   {featuredEvent && (
-    <section class="hero min-h-[70vh]" style={`background-image:url(${featuredEvent.data.heroImage})`}>
-      <div class="hero-overlay bg-black/30"></div>
-      <div class="hero-content text-neutral-content text-center">
-        <div>
-          <h1 class="text-4xl md:text-5xl font-bold">{featuredEvent.data.title}</h1>
-          <p class="mt-2">{dateStr}</p>
-          <p class="opacity-90">{featuredEvent.data.locationName}</p>
-          <p class="mt-2 text-sm opacity-90">{trainerData?.name}</p>
-          <a href="#register" class="btn btn-primary mt-6">Book now</a>
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- Intro text -->
-  {featuredEvent && (
-    <section class="container mx-auto px-4 py-12">
-      <p class="text-lg leading-relaxed max-w-4xl mx-auto">{featuredEvent.data.intro}</p>
-    </section>
-  )}
-
-  <!-- Program section -->
-  {featuredEvent && (
-    <section id="program" class="container mx-auto px-4 py-12">
-      <h2 class="text-3xl font-bold mb-6">Course program</h2>
-      <div class="space-y-6">
-        {featuredEvent.data.program.map(day => (
-          <article class="card bg-base-100 shadow">
-            <div class="card-body">
-              <h3 class="card-title">{day.dayTitle}</h3>
-              <p class="whitespace-pre-wrap">{day.content}</p>
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
-  )}
-
-  <!-- Location section -->
-  {featuredEvent && (
-    <section id="location" class="container mx-auto px-4 py-12">
-      <h2 class="text-3xl font-bold mb-6">Course location</h2>
-      <div class="card bg-base-100 shadow">
-        <div class="card-body">
-          <h3 class="card-title">{featuredEvent.data.locationName}</h3>
-          {featuredEvent.data.locationUrl && (
-            <a href={featuredEvent.data.locationUrl} class="btn btn-outline btn-sm" target="_blank">View on map</a>
-          )}
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- Pricing section -->
-  {featuredEvent && (
-    <section id="pricing" class="container mx-auto px-4 py-12">
-      <h2 class="text-3xl font-bold mb-6">Course Pricing</h2>
-      <!-- Render event body (e.g., included items) -->
-      {Content && (
-        <div class="prose max-w-none mb-6">
-          <Content />
-        </div>
-      )}
-      <div class="grid sm:grid-cols-2 gap-4">
-        {featuredEvent.data.pricing.map(p => (
-          <div class="card bg-base-100 shadow text-center">
-            <div class="card-body">
-              <h3 class="card-title justify-center">{p.label}</h3>
-              <p class="text-2xl font-bold text-primary">{p.price}</p>
+    <section id="program" class="py-20 bg-white">
+      <div class="container-custom">
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center mb-16">
+            <div class="flex flex-wrap justify-center gap-8 text-lg mb-8">
+              <div class="flex items-center gap-2 text-gray-600">
+                <span class="text-2xl">📅</span>
+                <span>{new Date(featuredEvent.data.startDate).toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric'
+                })} - {new Date(featuredEvent.data.endDate).toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric'
+                })}</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-600">
+                <span class="text-2xl">📍</span>
+                <span>{featuredEvent.data.locationName}</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-600">
+                <span class="text-2xl">👨‍🏫</span>
+                <span>{trainerInfo?.data.name}</span>
+              </div>
             </div>
           </div>
-        ))}
-      </div>
-      <p class="mt-4 text-sm opacity-70">* payment in 2 installments option, please contact us directly</p>
-      <div class="mt-6">
-        <a href="#register" class="btn btn-primary">Book now</a>
+
+          <div class="prose prose-lg max-w-none mb-16">
+            <p class="text-xl leading-relaxed text-gray-700 text-center mb-12">
+              {featuredEvent.data.intro}
+            </p>
+
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900">Course program</h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+              {featuredEvent.data.program?.map((day: any) => (
+                <div class="card">
+                  <h3 class="text-xl font-bold text-gray-900 mb-4">{day.dayTitle}</h3>
+                  <p class="text-gray-600 leading-relaxed">{day.content}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )}
+
+  <!-- Location Section -->
+  <section id="location" class="py-20 bg-gray-50">
+    <div class="container-custom">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-12 text-gray-900">Course location</h2>
+        {featuredEvent && (
+          <div class="card max-w-2xl mx-auto">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">{featuredEvent.data.locationName}</h3>
+            <p class="text-lg text-gray-600 mb-6">A beautiful retreat location perfect for learning and growth.</p>
+            <a href={featuredEvent.data.locationUrl} class="btn-primary inline-block" target="_blank">View on map</a>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-20 bg-white">
+    <div class="container-custom">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-4xl font-bold text-center mb-16 text-gray-900">Course Pricing</h2>
+
+        {featuredEvent && (
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            {featuredEvent.data.pricing?.map((option: any) => (
+              <div class="card text-center">
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">{option.label}</h3>
+                <p class="text-4xl font-bold text-blue-600 mb-6">{option.price}</p>
+                <a href="#register" class="btn-primary">Book now</a>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div class="text-center">
+          <p class="text-sm text-gray-500">* payment in 2 installments option, please contact us directly</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Host & Special Guest -->
   {(trainerData || (featuredEvent && featuredEvent.data.specialGuests?.length)) && (
