@@ -1,6 +1,6 @@
 ---
 title: "Storytelling and Postural Awareness Course"
-heroImage: "/placeholder-hero.jpg"
+heroImage: "/hero-image.svg"
 startDate: "2025-09-13"
 endDate: "2025-09-16"
 online: false
