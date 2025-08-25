@@ -1,0 +1,73 @@
+backend:
+  name: github
+  repo: emilixs/habitatroot
+  branch: main
+  site_domain: habitatroot.com # Will update with actual domain
+  base_url: https://habitatroot.com # Will update with production URL
+  auth_endpoint: oauth
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "events"
+    label: "Events"
+    folder: "src/content/events"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Hero Image", name: "heroImage", widget: "image", required: false }
+      - { label: "Start Date", name: "startDate", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "End Date", name: "endDate", widget: "datetime", format: "YYYY-MM-DD", required: false }
+      - { label: "Online Event", name: "online", widget: "boolean", default: false }
+      - { label: "Location Name", name: "locationName", widget: "string" }
+      - { label: "Location URL", name: "locationUrl", widget: "string", required: false }
+      - { label: "Intro", name: "intro", widget: "text" }
+      - label: "Program"
+        name: "program"
+        widget: "list"
+        fields:
+          - { label: "Day Title", name: "dayTitle", widget: "string" }
+          - { label: "Content", name: "content", widget: "text" }
+      - label: "Pricing"
+        name: "pricing"
+        widget: "list"
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - { label: "Price", name: "price", widget: "string" }
+      - label: "Special Guests"
+        name: "specialGuests"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Bio", name: "bio", widget: "text" }
+          - { label: "Image", name: "image", widget: "image", required: false }
+      - { label: "Registration Open", name: "registrationOpen", widget: "boolean", default: true }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "trainer"
+    label: "Trainer"
+    files:
+      - label: "Trainer Profile"
+        name: "ina"
+        file: "src/content/trainer/ina.md"
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Expertise", name: "expertise", widget: "string" }
+          - { label: "Story", name: "story", widget: "text" }
+          - { label: "Image", name: "image", widget: "image" }
+          - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - label: "Contact Info"
+        name: "contact"
+        file: "src/content/settings/contact.json"
+        fields:
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Phone", name: "phone", widget: "string" }
+          - { label: "Address", name: "address", widget: "text", required: false }
