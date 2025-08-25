@@ -31,112 +31,103 @@ const dateStr = featuredEvent ? formatDateRange(featuredEvent.data.startDate, fe
 ---
 
 <Layout title="HabitatRoot - Storytelling and Postural Awareness Course">
-  <!-- Hero Section -->
-  <section class="hero-section bg-gradient-to-br from-blue-50 to-gray-50">
-    <div class="container-custom text-center">
-      <div class="max-w-4xl mx-auto">
-        <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+  <!-- Hero Section matching reference site -->
+  <section class="section-spacing">
+    <div class="container-site">
+      <div class="max-w-none">
+        <h1 class="text-4xl md:text-5xl font-serif text-gray-900 mb-8 leading-tight">
           {featuredEvent?.data.title || "Storytelling and Postural Awareness Course"}
         </h1>
-        <p class="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
-          {featuredEvent?.data.intro || "The first immersive communication and posture course in Romania"}
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#program" class="btn-primary text-lg">Program details</a>
-          <a href="#register" class="btn-secondary text-lg">Book course</a>
+
+        <!-- Event details -->
+        <div class="mb-8 text-content">
+          <p class="mb-2">
+            📅 {new Date(featuredEvent?.data.startDate || '2025-09-13').toLocaleDateString('en-US', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            })} - {new Date(featuredEvent?.data.endDate || '2025-09-16').toLocaleDateString('en-US', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            })}
+          </p>
+          <p class="mb-2">📍 {featuredEvent?.data.locationName || "Arome 22, Eforie Sud"}</p>
+          <p class="mb-6">👨‍🏫 {trainerInfo?.data.name || "Ina Constantinescu"}</p>
+        </div>
+
+        <div class="mb-8">
+          <a href="#program" class="btn-secondary">Program details</a>
+        </div>
+
+        <!-- Description -->
+        <div class="prose prose-lg max-w-none text-content">
+          <p class="text-lg leading-relaxed mb-8">
+            {featuredEvent?.data.intro || "The first immersive communication and posture course in Romania. It combines public speaking techniques and the art of authentic storytelling with body-awareness techniques to improve how you communicate and present yourself. Participants will learn how to use their voice, body, and personal stories to create a genuine connection with the audience. The program includes storytelling and posture exercises, along with social sessions, a handwriting workshop, and posture‑correction and relaxation workshops, in a setting that fosters confidence and authenticity."}
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Event Details -->
-  {featuredEvent && (
-    <section id="program" class="py-20 bg-white">
-      <div class="container-custom">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
-            <div class="flex flex-wrap justify-center gap-8 text-lg mb-8">
-              <div class="flex items-center gap-2 text-gray-600">
-                <span class="text-2xl">📅</span>
-                <span>{new Date(featuredEvent.data.startDate).toLocaleDateString('en-US', {
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric'
-                })} - {new Date(featuredEvent.data.endDate).toLocaleDateString('en-US', {
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric'
-                })}</span>
-              </div>
-              <div class="flex items-center gap-2 text-gray-600">
-                <span class="text-2xl">📍</span>
-                <span>{featuredEvent.data.locationName}</span>
-              </div>
-              <div class="flex items-center gap-2 text-gray-600">
-                <span class="text-2xl">👨‍🏫</span>
-                <span>{trainerInfo?.data.name}</span>
-              </div>
-            </div>
-          </div>
+  <!-- Course Program Section -->
+  <section id="program" class="section-spacing">
+    <div class="container-site">
+      <h2 class="text-3xl font-serif text-gray-900 mb-12">Course program</h2>
 
-          <div class="prose prose-lg max-w-none mb-16">
-            <p class="text-xl leading-relaxed text-gray-700 text-center mb-12">
-              {featuredEvent.data.intro}
-            </p>
-
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900">Course program</h2>
-
-            <div class="grid md:grid-cols-2 gap-8">
-              {featuredEvent.data.program?.map((day: any) => (
-                <div class="card">
-                  <h3 class="text-xl font-bold text-gray-900 mb-4">{day.dayTitle}</h3>
-                  <p class="text-gray-600 leading-relaxed">{day.content}</p>
-                </div>
-              ))}
-            </div>
+      {featuredEvent?.data.program?.map((day: any) => (
+        <div class="mb-12">
+          <h3 class="text-xl font-serif text-gray-900 mb-4">{day.dayTitle}</h3>
+          <div class="text-content whitespace-pre-line leading-relaxed">
+            {day.content}
           </div>
         </div>
-      </div>
-    </section>
-  )}
-
-  <!-- Location Section -->
-  <section id="location" class="py-20 bg-gray-50">
-    <div class="container-custom">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-12 text-gray-900">Course location</h2>
-        {featuredEvent && (
-          <div class="card max-w-2xl mx-auto">
-            <h3 class="text-2xl font-bold text-gray-900 mb-4">{featuredEvent.data.locationName}</h3>
-            <p class="text-lg text-gray-600 mb-6">A beautiful retreat location perfect for learning and growth.</p>
-            <a href={featuredEvent.data.locationUrl} class="btn-primary inline-block" target="_blank">View on map</a>
-          </div>
-        )}
-      </div>
+      ))}
     </div>
   </section>
 
-  <!-- Pricing Section -->
-  <section id="pricing" class="py-20 bg-white">
-    <div class="container-custom">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-16 text-gray-900">Course Pricing</h2>
+  <!-- Course Location Section -->
+  <section id="location" class="section-spacing">
+    <div class="container-site">
+      <h2 class="text-3xl font-serif text-gray-900 mb-8">Course location</h2>
 
-        {featuredEvent && (
-          <div class="grid md:grid-cols-2 gap-8 mb-8">
-            {featuredEvent.data.pricing?.map((option: any) => (
-              <div class="card text-center">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">{option.label}</h3>
-                <p class="text-4xl font-bold text-blue-600 mb-6">{option.price}</p>
-                <a href="#register" class="btn-primary">Book now</a>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div class="text-center">
-          <p class="text-sm text-gray-500">* payment in 2 installments option, please contact us directly</p>
+      {featuredEvent && (
+        <div class="mb-8">
+          <h3 class="text-xl font-serif text-gray-900 mb-4">{featuredEvent.data.locationName}</h3>
+          <p class="text-content mb-6">A beautiful retreat location perfect for learning and growth.</p>
+          <a href={featuredEvent.data.locationUrl} class="btn-secondary" target="_blank">View on map</a>
         </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Course Pricing Section -->
+  <section id="pricing" class="section-spacing">
+    <div class="container-site">
+      <h2 class="text-3xl font-serif text-gray-900 mb-8">Course Pricing</h2>
+
+      <div class="mb-8">
+        <h3 class="text-xl font-serif text-gray-900 mb-4">Storytelling and Postural Awareness Course</h3>
+        <div class="text-content mb-6">
+          <p class="mb-4"><strong>The program includes:</strong></p>
+          <p class="mb-2">Accommodation in double or single room</p>
+          <p class="mb-2">3.5 days of an immersive course led by the trainer and physical therapist</p>
+          <p class="mb-2">Fresh local breakfast served daily</p>
+          <p class="mb-2">Facilitated games</p>
+          <p class="mb-2">Tatar-style dinner with music</p>
+          <p class="mb-2">Dinner: fresh Black Sea fish menu with Tuzla green salad</p>
+          <p class="mb-2">Campfire dinner at Vila Cerbu</p>
+          <p class="mb-2">Final show where you can invite a partner</p>
+          <p class="mb-6">Professional photo and video content captured throughout the experience.</p>
+        </div>
+
+        <div class="text-lg font-medium mb-4">
+          <span class="font-bold">2050 RON</span> double room OR <span class="font-bold">2500 RON</span> single room
+        </div>
+
+        <p class="text-sm text-gray-600 mb-6">* payment in 2 installments option, please contact us directly</p>
+
+        <a href="#register" class="btn-primary">Book now</a>
       </div>
     </div>
   </section>
@@ -165,52 +156,91 @@ const dateStr = featuredEvent ? formatDateRange(featuredEvent.data.startDate, fe
     </section>
   )}
 
-  <!-- Register section -->
-  {featuredEvent && (
-    <section id="register" class="container mx-auto px-4 py-12">
-      <h2 class="text-3xl font-bold mb-6">Register</h2>
-      <div class="card bg-base-100 shadow">
-        <div class="card-body">
-          <p class="mb-4 text-sm opacity-80">Course: {featuredEvent.data.title} • Dates: {dateStr} • Location: {featuredEvent.data.locationName}</p>
-          <form class="grid gap-4 max-w-2xl">
-            <input name="full_name" class="input input-bordered" placeholder="Full name" required />
-            <input name="phone" class="input input-bordered" placeholder="Phone number" required />
-            <input name="email" type="email" class="input input-bordered" placeholder="Email address" required />
-            <textarea name="interest" class="textarea textarea-bordered" placeholder="Why are you interested in this course and what are you hoping to explore or learn?" required></textarea>
-            <div class="form-control">
-              <label class="label"><span class="label-text">Preferred accommodation</span></label>
-              <select name="accommodation" class="select select-bordered">
-                <option value="double">Double room</option>
-                <option value="single">Single room</option>
-              </select>
-              <label class="label"><span class="label-text-alt">Single room comes at a higher rate.</span></label>
-            </div>
-            <input name="social_url" class="input input-bordered" placeholder="Instagram/LinkedIn profile URL" required />
-            <div class="form-control">
-              <label class="label"><span class="label-text">Interested in participating in the final show with a partner?</span></label>
-              <div class="flex gap-4">
-                <label class="label cursor-pointer"><span class="label-text mr-2">Yes</span><input type="radio" name="final_show_partner" value="yes" class="radio" required /></label>
-                <label class="label cursor-pointer"><span class="label-text mr-2">No</span><input type="radio" name="final_show_partner" value="no" class="radio" required /></label>
-              </div>
-            </div>
-            <textarea name="notes" class="textarea textarea-bordered" placeholder="Anything else you'd like to share?" required></textarea>
-            <p class="text-sm opacity-80">To reserve your spot, we ask for a 50% deposit; full payment is due 5 working days before the course.</p>
-            <button class="btn btn-primary">Book now</button>
-          </form>
-        </div>
+  <!-- Register Section -->
+  <section id="register" class="section-spacing">
+    <div class="container-site">
+      <h2 class="text-3xl font-serif text-gray-900 mb-8">Register</h2>
+
+      <div class="mb-6 text-content">
+        <p class="mb-2"><strong>Course:</strong> {featuredEvent?.data.title || "Storytelling and Postural Awareness Course"}</p>
+        <p class="mb-2"><strong>Dates:</strong> {dateStr || "13 – 16 September 2025"}</p>
+        <p class="mb-2"><strong>Location:</strong> {featuredEvent?.data.locationName || "Arome 22, Eforie Sud"}</p>
+        <p class="mb-6"><strong>Facilitator:</strong> Sr. Trainer {trainerInfo?.data.name || "Ina Constantinescu"}, Physical Therapist specialized in posture correction</p>
+        <p class="mb-8">To reserve your spot, we ask for a 50% deposit; full payment is due 5 working days before the course.</p>
       </div>
-    </section>
-  )}
+
+      <form class="space-y-6 max-w-2xl">
+        <!-- Hidden honeypot field -->
+        <input type="text" name="honeypot" style="display: none;" />
+
+        <div>
+          <input name="full_name" class="form-input" placeholder="Full name" required />
+        </div>
+
+        <div>
+          <input name="phone" class="form-input" placeholder="Phone number" required />
+        </div>
+
+        <div>
+          <input name="email" type="email" class="form-input" placeholder="Email address" required />
+        </div>
+
+        <div>
+          <textarea name="interest" class="form-textarea" placeholder="Why are you interested in this course and what are you hoping to explore or learn?" required></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm text-gray-700 mb-2">Preferred accommodation</label>
+          <select name="accommodation" class="form-select" required>
+            <option value="double">Double room</option>
+            <option value="single">Single room</option>
+          </select>
+          <p class="text-sm text-gray-600 mt-1">Single room comes at a higher rate.</p>
+        </div>
+
+        <div>
+          <input name="social_url" class="form-input" placeholder="Instagram/LinkedIn profile URL" required />
+        </div>
+
+        <div>
+          <label class="block text-sm text-gray-700 mb-3">Interested in participating in the final show with a partner?</label>
+          <div class="flex gap-6">
+            <label class="flex items-center">
+              <input type="radio" name="final_show_partner" value="yes" class="mr-2" required />
+              <span class="text-sm">Yes</span>
+            </label>
+            <label class="flex items-center">
+              <input type="radio" name="final_show_partner" value="no" class="mr-2" required />
+              <span class="text-sm">No</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <textarea name="notes" class="form-textarea" placeholder="Anything else you'd like to share?" required></textarea>
+        </div>
+
+        <div class="text-content">
+          <p class="mb-6">To reserve your spot, we ask for a 50% deposit; full payment is due 5 working days before the course.</p>
+        </div>
+
+        <div>
+          <button type="submit" class="btn-primary">Book now</button>
+        </div>
+      </form>
+    </div>
+  </section>
 
 
 
   <script>
+    // Navigation highlighting
     const ids = ['program','location','pricing','register'];
     const link = id => document.querySelector(`a[href="#${id}"]`);
     const obs = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
         const a = link(e.target.id);
-        if (a) a.classList.toggle('btn-active', e.isIntersecting);
+        if (a) a.classList.toggle('nav-link-active', e.isIntersecting);
       });
     }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
     ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });

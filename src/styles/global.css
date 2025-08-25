@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom base styles */
+/* Base styles matching reference site */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -13,7 +13,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold text-gray-900;
+    @apply font-serif font-normal;
   }
 
   section[id] {
@@ -21,25 +21,45 @@
   }
 }
 
-/* Custom component styles */
+/* Component styles matching reference site */
 @layer components {
+  .container-site {
+    @apply max-w-content mx-auto px-6 md:px-8;
+  }
+
+  .nav-link {
+    @apply text-gray-900 hover:text-gray-600 transition-colors duration-200 text-sm;
+  }
+
+  .nav-link-active {
+    @apply text-gray-900 font-medium;
+  }
+
+  .section-spacing {
+    @apply py-12 md:py-16;
+  }
+
+  .text-content {
+    @apply leading-relaxed text-gray-800;
+  }
+
+  .form-input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-none focus:outline-none focus:border-gray-500 transition-colors;
+  }
+
+  .form-textarea {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-none focus:outline-none focus:border-gray-500 transition-colors resize-vertical min-h-[120px];
+  }
+
+  .form-select {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-none focus:outline-none focus:border-gray-500 transition-colors bg-white;
+  }
+
   .btn-primary {
-    @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200;
+    @apply inline-block bg-gray-900 text-white px-8 py-3 rounded-none font-medium hover:bg-gray-800 transition-colors text-sm;
   }
 
   .btn-secondary {
-    @apply bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold py-3 px-6 rounded-lg transition-colors duration-200;
-  }
-
-  .hero-section {
-    @apply min-h-screen flex items-center justify-center;
-  }
-
-  .card {
-    @apply bg-white rounded-xl shadow-lg p-6 border border-gray-100;
-  }
-
-  .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply inline-block border border-gray-900 text-gray-900 px-8 py-3 rounded-none font-medium hover:bg-gray-50 transition-colors text-sm;
   }
 }
