@@ -26,7 +26,7 @@ specialGuests:
     bio: "I am a physiotherapist specialized in posture correction and I am certified in osteopathic techniques."
     image: "/placeholder-hero.jpg"
 registrationOpen: true
-featured: true
+featured: false
 ---
 
 ## Storytelling and Postural Awareness Course

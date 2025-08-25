@@ -51,7 +51,7 @@ pricing:
 specialGuests:
   - name: "Daniel Stoia"
     bio: "I am a physiotherapist specialized in posture correction and I am certified in osteopathic techniques."
-    image: "/uploads/daniel-stoia.jpg"
+    image: "/uploads/daniel.webp"
 registrationOpen: true
 featured: true
 ---
