@@ -7,82 +7,190 @@ const featuredEvent = events.find(e => e.data.featured) || events[0];
 const trainer = await getCollection('trainer');
 const trainerData = trainer[0]?.data;
 
-const now = new Date();
-const upcomingEvents = events.filter(e => new Date(e.data.startDate) >= now);
+function formatDateRange(startStr, endStr) {
+  const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+  const s = new Date(startStr);
+  const e = endStr ? new Date(endStr) : null;
+  if (!e || s.toDateString() === e.toDateString()) {
+    return `${s.getDate()} ${months[s.getMonth()]} ${s.getFullYear()}`;
+  }
+  const sameMonth = s.getMonth() === e.getMonth() && s.getFullYear() === e.getFullYear();
+  if (sameMonth) return `${s.getDate()} - ${e.getDate()} ${months[s.getMonth()]} ${s.getFullYear()}`;
+  return `${s.getDate()} ${months[s.getMonth()]} - ${e.getDate()} ${months[e.getMonth()]} ${s.getFullYear()}`;
+}
+
+const dateStr = featuredEvent ? formatDateRange(featuredEvent.data.startDate, featuredEvent.data.endDate) : '';
+const { Content } = featuredEvent ? await featuredEvent.render() : { Content: null };
 ---
 
-<Layout title="Habitat Root - Communication & Posture Training">
-  <!-- Hero Section -->
-  <section class="hero min-h-screen bg-gradient-to-r from-primary to-secondary">
-    <div class="hero-content text-center text-primary-content">
-      <div class="max-w-md">
-        <h1 class="mb-5 text-5xl font-bold">Habitat Root</h1>
-        <p class="mb-5">Transform your communication and posture with authentic training experiences</p>
-        <a href="#next-event" class="btn btn-accent">Discover Events</a>
-      </div>
+<Layout title={featuredEvent ? featuredEvent.data.title : 'Habitat Root'}>
+  <!-- Sticky anchor navigation -->
+  <nav class="w-full sticky top-0 z-40 bg-base-100/80 backdrop-blur">
+    <div class="container mx-auto px-4 py-2 flex gap-2 justify-center">
+      <a href="#program" class="btn btn-sm">Program</a>
+      <a href="#location" class="btn btn-sm">Location</a>
+      <a href="#pricing" class="btn btn-sm">Pricing</a>
+      <a href="#register" class="btn btn-primary btn-sm">Book now</a>
     </div>
-  </section>
+  </nav>
 
-  <!-- What is Habitat Root -->
-  <section class="py-16 bg-base-100">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold mb-8">What is Habitat Root</h2>
-      <p class="text-lg max-w-3xl mx-auto">
-        Habitat Root combines public speaking techniques and authentic storytelling
-        with body-awareness methods to improve how you communicate and present yourself.
-      </p>
-    </div>
-  </section>
-
-  <!-- Trainer Section -->
-  {trainerData && (
-    <section class="py-16 bg-base-200">
-      <div class="container mx-auto px-4">
-        <div class="hero">
-          <div class="hero-content flex-col lg:flex-row">
-            <img src={trainerData.image} class="max-w-sm rounded-lg shadow-2xl" alt={trainerData.name} />
-            <div>
-              <h2 class="text-3xl font-bold">{trainerData.name}</h2>
-              <p class="text-xl text-primary mb-4">{trainerData.expertise}</p>
-              <p class="py-6">{trainerData.story}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- Next Event -->
+  <!-- Hero Section: background image + overlay -->
   {featuredEvent && (
-    <section id="next-event" class="py-16 bg-base-100">
-      <div class="container mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold mb-8">Next Event</h2>
-        <div class="card lg:card-side bg-base-100 shadow-xl max-w-4xl mx-auto">
-          {featuredEvent.data.heroImage && (
-            <figure><img src={featuredEvent.data.heroImage} alt={featuredEvent.data.title} /></figure>
-          )}
-          <div class="card-body">
-            <h3 class="card-title">{featuredEvent.data.title}</h3>
-            <p>{featuredEvent.data.intro}</p>
-            <p class="text-sm opacity-70">
-              {new Date(featuredEvent.data.startDate).toLocaleDateString()} • {featuredEvent.data.locationName}
-            </p>
-            <div class="card-actions justify-end">
-              <a href={`/events/${featuredEvent.slug}`} class="btn btn-primary">Register</a>
-            </div>
-          </div>
+    <section class="hero min-h-[70vh]" style={`background-image:url(${featuredEvent.data.heroImage})`}>
+      <div class="hero-overlay bg-black/30"></div>
+      <div class="hero-content text-neutral-content text-center">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-bold">{featuredEvent.data.title}</h1>
+          <p class="mt-2">{dateStr}</p>
+          <p class="opacity-90">{featuredEvent.data.locationName}</p>
+          <p class="mt-2 text-sm opacity-90">{trainerData?.name}</p>
+          <a href="#register" class="btn btn-primary mt-6">Book now</a>
         </div>
       </div>
     </section>
   )}
 
-  <!-- CTAs -->
-  <section class="py-16 bg-base-200">
-    <div class="container mx-auto px-4 text-center">
-      <div class="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-        <a href="/events" class="btn btn-lg btn-primary">See All Future Events</a>
-        <a href="/contact" class="btn btn-lg btn-secondary">Learn More</a>
+  <!-- Intro text -->
+  {featuredEvent && (
+    <section class="container mx-auto px-4 py-12">
+      <p class="text-lg leading-relaxed max-w-4xl mx-auto">{featuredEvent.data.intro}</p>
+    </section>
+  )}
+
+  <!-- Program section -->
+  {featuredEvent && (
+    <section id="program" class="container mx-auto px-4 py-12">
+      <h2 class="text-3xl font-bold mb-6">Course program</h2>
+      <div class="space-y-6">
+        {featuredEvent.data.program.map(day => (
+          <article class="card bg-base-100 shadow">
+            <div class="card-body">
+              <h3 class="card-title">{day.dayTitle}</h3>
+              <p class="whitespace-pre-wrap">{day.content}</p>
+            </div>
+          </article>
+        ))}
       </div>
-    </div>
-  </section>
+    </section>
+  )}
+
+  <!-- Location section -->
+  {featuredEvent && (
+    <section id="location" class="container mx-auto px-4 py-12">
+      <h2 class="text-3xl font-bold mb-6">Course location</h2>
+      <div class="card bg-base-100 shadow">
+        <div class="card-body">
+          <h3 class="card-title">{featuredEvent.data.locationName}</h3>
+          {featuredEvent.data.locationUrl && (
+            <a href={featuredEvent.data.locationUrl} class="btn btn-outline btn-sm" target="_blank">View on map</a>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Pricing section -->
+  {featuredEvent && (
+    <section id="pricing" class="container mx-auto px-4 py-12">
+      <h2 class="text-3xl font-bold mb-6">Course Pricing</h2>
+      <!-- Render event body (e.g., included items) -->
+      {Content && (
+        <div class="prose max-w-none mb-6">
+          <Content />
+        </div>
+      )}
+      <div class="grid sm:grid-cols-2 gap-4">
+        {featuredEvent.data.pricing.map(p => (
+          <div class="card bg-base-100 shadow text-center">
+            <div class="card-body">
+              <h3 class="card-title justify-center">{p.label}</h3>
+              <p class="text-2xl font-bold text-primary">{p.price}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="mt-4 text-sm opacity-70">* payment in 2 installments option, please contact us directly</p>
+      <div class="mt-6">
+        <a href="#register" class="btn btn-primary">Book now</a>
+      </div>
+    </section>
+  )}
+
+  <!-- Host & Special Guest -->
+  {(trainerData || (featuredEvent && featuredEvent.data.specialGuests?.length)) && (
+    <section class="container mx-auto px-4 py-12">
+      <div class="grid md:grid-cols-2 gap-8">
+        {trainerData && (
+          <div class="card bg-base-100 shadow">
+            <div class="card-body">
+              <h3 class="card-title">Meet your host {trainerData.name}</h3>
+              <blockquote class="italic">“{trainerData.story}”</blockquote>
+            </div>
+          </div>
+        )}
+        {featuredEvent?.data.specialGuests?.length > 0 && (
+          <div class="card bg-base-100 shadow">
+            <div class="card-body">
+              <h3 class="card-title">Special guest: {featuredEvent.data.specialGuests[0].name}</h3>
+              <p>“{featuredEvent.data.specialGuests[0].bio}”</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- Register section -->
+  {featuredEvent && (
+    <section id="register" class="container mx-auto px-4 py-12">
+      <h2 class="text-3xl font-bold mb-6">Register</h2>
+      <div class="card bg-base-100 shadow">
+        <div class="card-body">
+          <p class="mb-4 text-sm opacity-80">Course: {featuredEvent.data.title} • Dates: {dateStr} • Location: {featuredEvent.data.locationName}</p>
+          <form class="grid gap-4 max-w-2xl">
+            <input name="full_name" class="input input-bordered" placeholder="Full name" required />
+            <input name="phone" class="input input-bordered" placeholder="Phone number" required />
+            <input name="email" type="email" class="input input-bordered" placeholder="Email address" required />
+            <textarea name="interest" class="textarea textarea-bordered" placeholder="Why are you interested in this course and what are you hoping to explore or learn?" required></textarea>
+            <div class="form-control">
+              <label class="label"><span class="label-text">Preferred accommodation</span></label>
+              <select name="accommodation" class="select select-bordered">
+                <option value="double">Double room</option>
+                <option value="single">Single room</option>
+              </select>
+              <label class="label"><span class="label-text-alt">Single room comes at a higher rate.</span></label>
+            </div>
+            <input name="social_url" class="input input-bordered" placeholder="Instagram/LinkedIn profile URL" required />
+            <div class="form-control">
+              <label class="label"><span class="label-text">Interested in participating in the final show with a partner?</span></label>
+              <div class="flex gap-4">
+                <label class="label cursor-pointer"><span class="label-text mr-2">Yes</span><input type="radio" name="final_show_partner" value="yes" class="radio" required /></label>
+                <label class="label cursor-pointer"><span class="label-text mr-2">No</span><input type="radio" name="final_show_partner" value="no" class="radio" required /></label>
+              </div>
+            </div>
+            <textarea name="notes" class="textarea textarea-bordered" placeholder="Anything else you'd like to share?" required></textarea>
+            <p class="text-sm opacity-80">To reserve your spot, we ask for a 50% deposit; full payment is due 5 working days before the course.</p>
+            <button class="btn btn-primary">Book now</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <style is:global>
+    html { scroll-behavior: smooth; }
+    section[id] { scroll-margin-top: 5rem; }
+  </style>
+
+  <script>
+    const ids = ['program','location','pricing','register'];
+    const link = id => document.querySelector(`a[href="#${id}"]`);
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        const a = link(e.target.id);
+        if (a) a.classList.toggle('btn-active', e.isIntersecting);
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
+    ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+  </script>
 </Layout>
