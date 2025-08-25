@@ -2,9 +2,8 @@ backend:
   name: github
   repo: emilixs/habitatroot
   branch: main
-  site_domain: habitatroot.com # Will update with actual domain
-  base_url: https://habitatroot.com # Will update with production URL
-  auth_endpoint: oauth
+  # For static builds, we'll use GitHub's built-in OAuth
+  # No custom auth_endpoint needed
 
 media_folder: "public/uploads"
 public_folder: "/uploads"

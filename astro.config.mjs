@@ -2,15 +2,28 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
-import decapCmsOauth from 'astro-decap-cms-oauth';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://habitatroot.com', // Will update with actual domain
+  site: process.env.SITE_URL || 'https://habitatroot.com',
   integrations: [
     tailwind(),
-    sitemap(),
-    decapCmsOauth()
+    sitemap()
+    // Note: decapCmsOauth integration removed for static builds
+    // For production with CMS, use a server adapter like @astrojs/netlify
   ],
-  output: 'static' // Static build for now, will change to server when deploying
+  output: 'static', // Static build for GitHub Pages and similar hosts
+
+  // Vite configuration for better build optimization
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['astro']
+          }
+        }
+      }
+    }
+  }
 });
