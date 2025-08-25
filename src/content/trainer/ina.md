@@ -2,7 +2,7 @@
 name: "Ina Constantinescu"
 expertise: "Communication & Authenticity Training"
 story: "I train people communicate with confidence and authenticity, using almost 15 years of experience, plus a mix of sport discipline, acting, and improv to make learning engaging, and yes, even a little fun."
-image: "/uploads/ina.jpg"
+image: "/placeholder-hero.jpg"
 ---
 
 With almost 15 years of experience in communication training, Ina brings a unique blend of expertise from sports discipline, acting, and improvisation to create engaging and transformative learning experiences.

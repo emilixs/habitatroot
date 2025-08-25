@@ -1,6 +1,6 @@
 ---
 title: "Storytelling and Postural Awareness Course"
-heroImage: "/uploads/storytelling-hero.jpg"
+heroImage: "/placeholder-hero.jpg"
 startDate: "2025-09-13"
 endDate: "2025-09-16"
 online: false
@@ -24,7 +24,7 @@ pricing:
 specialGuests:
   - name: "Daniel Stoia"
     bio: "I am a physiotherapist specialized in posture correction and I am certified in osteopathic techniques."
-    image: "/uploads/daniel.jpg"
+    image: "/placeholder-hero.jpg"
 registrationOpen: true
 featured: true
 ---
