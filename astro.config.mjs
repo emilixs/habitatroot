@@ -12,5 +12,5 @@ export default defineConfig({
     sitemap(),
     decapCmsOauth()
   ],
-  output: 'server' // Enables SSR for API routes
+  output: 'static' // Static build for now, will change to server when deploying
 });

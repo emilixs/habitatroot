@@ -1,0 +1,2 @@
+# This file ensures the uploads directory is tracked by git
+# Actual images will be uploaded via the CMS
