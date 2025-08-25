@@ -1,16 +1,88 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
 
+const events = await getCollection('events');
+const featuredEvent = events.find(e => e.data.featured) || events[0];
+const trainer = await getCollection('trainer');
+const trainerData = trainer[0]?.data;
+
+const now = new Date();
+const upcomingEvents = events.filter(e => new Date(e.data.startDate) >= now);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Habitat Root - Communication & Posture Training">
+  <!-- Hero Section -->
+  <section class="hero min-h-screen bg-gradient-to-r from-primary to-secondary">
+    <div class="hero-content text-center text-primary-content">
+      <div class="max-w-md">
+        <h1 class="mb-5 text-5xl font-bold">Habitat Root</h1>
+        <p class="mb-5">Transform your communication and posture with authentic training experiences</p>
+        <a href="#next-event" class="btn btn-accent">Discover Events</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What is Habitat Root -->
+  <section class="py-16 bg-base-100">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-8">What is Habitat Root</h2>
+      <p class="text-lg max-w-3xl mx-auto">
+        Habitat Root combines public speaking techniques and authentic storytelling
+        with body-awareness methods to improve how you communicate and present yourself.
+      </p>
+    </div>
+  </section>
+
+  <!-- Trainer Section -->
+  {trainerData && (
+    <section class="py-16 bg-base-200">
+      <div class="container mx-auto px-4">
+        <div class="hero">
+          <div class="hero-content flex-col lg:flex-row">
+            <img src={trainerData.image} class="max-w-sm rounded-lg shadow-2xl" alt={trainerData.name} />
+            <div>
+              <h2 class="text-3xl font-bold">{trainerData.name}</h2>
+              <p class="text-xl text-primary mb-4">{trainerData.expertise}</p>
+              <p class="py-6">{trainerData.story}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Next Event -->
+  {featuredEvent && (
+    <section id="next-event" class="py-16 bg-base-100">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-8">Next Event</h2>
+        <div class="card lg:card-side bg-base-100 shadow-xl max-w-4xl mx-auto">
+          {featuredEvent.data.heroImage && (
+            <figure><img src={featuredEvent.data.heroImage} alt={featuredEvent.data.title} /></figure>
+          )}
+          <div class="card-body">
+            <h3 class="card-title">{featuredEvent.data.title}</h3>
+            <p>{featuredEvent.data.intro}</p>
+            <p class="text-sm opacity-70">
+              {new Date(featuredEvent.data.startDate).toLocaleDateString()} • {featuredEvent.data.locationName}
+            </p>
+            <div class="card-actions justify-end">
+              <a href={`/events/${featuredEvent.slug}`} class="btn btn-primary">Register</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTAs -->
+  <section class="py-16 bg-base-200">
+    <div class="container mx-auto px-4 text-center">
+      <div class="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+        <a href="/events" class="btn btn-lg btn-primary">See All Future Events</a>
+        <a href="/contact" class="btn btn-lg btn-secondary">Learn More</a>
+      </div>
+    </div>
+  </section>
+</Layout>

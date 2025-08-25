@@ -1,0 +1,99 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allEvents = await getCollection('events');
+const now = new Date();
+
+// Get filter parameters
+const url = new URL(Astro.request.url);
+const mode = url.searchParams.get('mode') || 'future'; // 'future' | 'past' | 'all'
+const type = url.searchParams.get('type') || 'all';    // 'all' | 'online' | 'live'
+
+// Filter events
+let events = allEvents.filter(event => {
+  const eventDate = new Date(event.data.startDate);
+  const isFuture = eventDate >= now;
+  
+  // Filter by time
+  const modeMatch = mode === 'all' ? true : 
+                   mode === 'future' ? isFuture : !isFuture;
+  
+  // Filter by type
+  const typeMatch = type === 'all' ? true :
+                   type === 'online' ? event.data.online : !event.data.online;
+  
+  return modeMatch && typeMatch;
+});
+
+// Sort by date
+events.sort((a, b) => new Date(a.data.startDate).getTime() - new Date(b.data.startDate).getTime());
+---
+
+<Layout title="Events - Habitat Root">
+  <!-- Hero -->
+  <section class="hero py-16 bg-gradient-to-r from-primary to-secondary">
+    <div class="hero-content text-center text-primary-content">
+      <div>
+        <h1 class="text-4xl font-bold">Events</h1>
+        <p class="text-lg">Discover our upcoming communication and posture training experiences</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="py-8 bg-base-200">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-wrap gap-4 justify-center">
+        <div class="join">
+          <a href="?mode=future&type=all" class={`join-item btn ${mode === 'future' ? 'btn-active' : ''}`}>Future</a>
+          <a href="?mode=past&type=all" class={`join-item btn ${mode === 'past' ? 'btn-active' : ''}`}>Past</a>
+          <a href="?mode=all&type=all" class={`join-item btn ${mode === 'all' ? 'btn-active' : ''}`}>All</a>
+        </div>
+        <div class="join">
+          <a href={`?mode=${mode}&type=all`} class={`join-item btn ${type === 'all' ? 'btn-active' : ''}`}>All Types</a>
+          <a href={`?mode=${mode}&type=online`} class={`join-item btn ${type === 'online' ? 'btn-active' : ''}`}>Online</a>
+          <a href={`?mode=${mode}&type=live`} class={`join-item btn ${type === 'live' ? 'btn-active' : ''}`}>Live</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events Grid -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      {events.length === 0 ? (
+        <div class="text-center">
+          <p class="text-lg">No events found for the selected filters.</p>
+        </div>
+      ) : (
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {events.map(event => {
+            const isPast = new Date(event.data.startDate) < now;
+            return (
+              <div class={`card bg-base-100 shadow-xl ${isPast ? 'opacity-60' : ''}`}>
+                {event.data.heroImage && (
+                  <figure><img src={event.data.heroImage} alt={event.data.title} /></figure>
+                )}
+                <div class="card-body">
+                  <h3 class="card-title">{event.data.title}</h3>
+                  <p class="text-sm opacity-70">
+                    {new Date(event.data.startDate).toLocaleDateString()}
+                  </p>
+                  <p class="text-sm">{event.data.locationName}</p>
+                  <p>{event.data.intro.substring(0, 100)}...</p>
+                  <div class="card-actions justify-end">
+                    <div class="badge badge-outline">{event.data.online ? 'Online' : 'Live'}</div>
+                    <a href={`/events/${event.slug}`} class="btn btn-primary btn-sm">
+                      {isPast ? 'View Details' : 'Register'}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,127 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const events = await getCollection('events');
+  return events.map(event => ({
+    params: { slug: event.slug },
+    props: { event }
+  }));
+}
+
+const { event } = Astro.props;
+const { Content } = await event.render();
+---
+
+<Layout title={`${event.data.title} - Habitat Root`} description={event.data.intro}>
+  <!-- Hero -->
+  <section class="hero min-h-[50vh]" style={event.data.heroImage ? `background-image: url(${event.data.heroImage})` : ''}>
+    <div class="hero-overlay bg-opacity-30"></div>
+    <div class="hero-content text-neutral-content text-center">
+      <div>
+        <h1 class="text-4xl font-bold">{event.data.title}</h1>
+        <p class="text-lg">{event.data.locationName}</p>
+        <p class="opacity-90">
+          {new Date(event.data.startDate).toLocaleDateString()} 
+          {event.data.endDate && ` - ${new Date(event.data.endDate).toLocaleDateString()}`}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="container mx-auto px-4 py-16">
+    <!-- Intro -->
+    <section class="mb-12">
+      <p class="text-lg leading-relaxed">{event.data.intro}</p>
+    </section>
+
+    <!-- Content -->
+    <section class="prose max-w-none mb-12">
+      <Content />
+    </section>
+
+    <!-- Program -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold mb-6">Program</h2>
+      <div class="space-y-8">
+        {event.data.program.map(day => (
+          <div class="card bg-base-100 shadow-lg">
+            <div class="card-body">
+              <h3 class="card-title text-xl">{day.dayTitle}</h3>
+              <p class="whitespace-pre-line">{day.content}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Location -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold mb-6">Location</h2>
+      <div class="card bg-base-100 shadow-lg">
+        <div class="card-body">
+          <h3 class="card-title">{event.data.locationName}</h3>
+          {event.data.locationUrl && (
+            <a href={event.data.locationUrl} class="btn btn-outline btn-sm" target="_blank">
+              View on Map
+            </a>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold mb-6">Pricing</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        {event.data.pricing.map(price => (
+          <div class="card bg-base-100 shadow-lg">
+            <div class="card-body text-center">
+              <h3 class="card-title justify-center">{price.label}</h3>
+              <p class="text-2xl font-bold text-primary">{price.price}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Special Guests -->
+    {event.data.specialGuests && event.data.specialGuests.length > 0 && (
+      <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6">Special Guests</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          {event.data.specialGuests.map(guest => (
+            <div class="card lg:card-side bg-base-100 shadow-lg">
+              {guest.image && (
+                <figure class="w-24 h-24"><img src={guest.image} alt={guest.name} class="rounded-full" /></figure>
+              )}
+              <div class="card-body">
+                <h3 class="card-title">{guest.name}</h3>
+                <p>{guest.bio}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Registration Notice -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold mb-6">Register</h2>
+      {event.data.registrationOpen ? (
+        <div class="card bg-base-100 shadow-lg">
+          <div class="card-body text-center">
+            <h3 class="card-title justify-center">Registration Open</h3>
+            <p class="mb-4">Contact us to register for this event.</p>
+            <a href="/contact" class="btn btn-primary btn-lg">Contact Us to Register</a>
+          </div>
+        </div>
+      ) : (
+        <div class="alert alert-warning">
+          <span>Registration for this event is currently closed.</span>
+        </div>
+      )}
+    </section>
+  </div>
+</Layout>
