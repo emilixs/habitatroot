@@ -29,6 +29,7 @@ collections:
         fields:
           - { label: "Day Title", name: "dayTitle", widget: "string" }
           - { label: "Content", name: "content", widget: "text" }
+          - { label: "Image", name: "image", widget: "image", required: false }
       - label: "Pricing"
         name: "pricing"
         widget: "list"
@@ -42,7 +43,9 @@ collections:
         fields:
           - { label: "Name", name: "name", widget: "string" }
           - { label: "Bio", name: "bio", widget: "text" }
-          - { label: "Image", name: "image", widget: "image", required: false }
+      - { label: "Location Gallery", name: "locationGallery", widget: "list", required: false, field: { label: "Image", name: "image", widget: "image" } }
+      - { label: "Pricing Image", name: "pricingImage", widget: "image", required: false }
+      - { label: "Image", name: "image", widget: "image", required: false }
       - { label: "Registration Open", name: "registrationOpen", widget: "boolean", default: true }
       - { label: "Featured", name: "featured", widget: "boolean", default: false }
       - { label: "Body", name: "body", widget: "markdown" }

@@ -1,6 +1,6 @@
 ---
 title: "Storytelling and Postural Awareness Course"
-heroImage: "/uploads/arome-22-hero.jpg"
+heroImage: "https://habitatroot.com/assets/hero.webp"
 startDate: "2025-09-13"
 endDate: "2025-09-16"
 online: false
@@ -16,6 +16,33 @@ program:
     content: "Your story becomes real when you speak it into space — and see yourself reflected back. Focus We move from construction to delivery. From inner work to outer presence."
   - dayTitle: "Day 4 — Secret Garden Talks"
     content: "Hidden behind an interwar villa, part of Romania's cultural heritage, the Secret Garden at Arome 22 is more than a setting — it's a quiet witness to voice, presence, and story."
+  - dayTitle: "Day 1 — What & Why We Speak"
+    content: "Before we communicate, we align — with structure, with posture. Focus We begin with the why behind our words — and the body that carries them. Because every message lives not just in language, but in how we stand, breathe, and show up."
+    image: "https://habitatroot.com/assets/day1.webp"
+  - dayTitle: "Day 2 — How We Move and Show Up"
+    content: "Your body speaks before your mouth does. What is it saying? Focus Your voice isn't just sound — it's posture, tension, movement, intention. We explore how the way we move, stand, and hold tension shapes how we show up and how we're heard."
+    image: "https://habitatroot.com/assets/day2.webp"
+  - dayTitle: "Day 3 — The Message & The Mirror"
+    content: "Your story becomes real when you speak it into space — and see yourself reflected back. Focus We move from construction to delivery. From inner work to outer presence. It's about embodying your message — and letting it land with clarity, simplicity, and impact."
+    image: "https://habitatroot.com/assets/day3.webp"
+locationGallery:
+  - "https://habitatroot.com/assets/location-1.webp"
+  - "https://habitatroot.com/assets/location-2.webp"
+  - "https://habitatroot.com/assets/location-3.webp"
+  - "https://habitatroot.com/assets/location-4.webp"
+  - "https://habitatroot.com/assets/location-5.webp"
+  - "https://habitatroot.com/assets/location-6.webp"
+  - "https://habitatroot.com/assets/location-7.webp"
+  - "https://habitatroot.com/assets/location-8.webp"
+  - "https://habitatroot.com/assets/location-9.webp"
+  - "https://habitatroot.com/assets/location-10.webp"
+  - "https://habitatroot.com/assets/location-11.webp"
+pricingImage: "https://habitatroot.com/assets/pricing.webp"
+
+  - dayTitle: "Day 4 — Secret Garden Talks"
+    content: "Hidden behind an interwar villa, part of Romania's cultural heritage, the Secret Garden at Arome 22 is more than a setting — it's a quiet witness to voice, presence, and story. Not in the spotlight, but in the natural light of the garden, we close the circle — with posture aligned, voices open, and messages ready to be shared."
+    image: "https://habitatroot.com/assets/day4.webp"
+
 pricing:
   - label: "Double room"
     price: "2050 RON"

@@ -5,6 +5,9 @@ export interface Props {
 }
 
 const { title, description = "HabitatRoot - Storytelling and Postural Awareness Courses" } = Astro.props;
+
+// Import CSS
+import '../styles/tailwind.css';
 ---
 
 <!DOCTYPE html>
@@ -26,10 +29,6 @@ const { title, description = "HabitatRoot - Storytelling and Postural Awareness 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
   </head>
   <body>
-    <!-- Import global CSS -->
-    <style is:global>
-      @import '../styles/global.css';
-    </style>
     <!-- Navigation matching reference site -->
     <nav class="border-b border-gray-200">
       <div class="container-site">

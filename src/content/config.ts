@@ -13,12 +13,15 @@ const events = defineCollection({
     intro: z.string(),
     program: z.array(z.object({
       dayTitle: z.string(),
-      content: z.string() // Markdown content
+      content: z.string(), // Markdown content
+      image: z.string().optional(),
     })),
     pricing: z.array(z.object({
       label: z.string(), // "Double room"
       price: z.string()  // "2050 RON"
     })),
+    locationGallery: z.array(z.string()).optional(),
+    pricingImage: z.string().optional(),
     specialGuests: z.array(z.object({
       name: z.string(),
       bio: z.string(),
